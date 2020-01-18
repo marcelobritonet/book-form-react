@@ -1,22 +1,42 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import styled from 'styled-components';
 
 function NumberPick({ actual, set, maxAllowed, minAllowed }) {
+    const _input = useRef();
+
+    useEffect(() => {
+        _input.current.value = actual;
+    }, [actual]);
+
     const sum = () => {
-        const summed = (actual + 1) > maxAllowed ? actual : actual + 1;
-        set(summed);
+        if((actual + 1) < maxAllowed) {
+            set(actual + 1);
+        }
     };
 
     const sub = () => {
-        const min = typeof minAllowed === 'number' ? minAllowed : 0;
-        const subtracted = (actual - 1 <= min) ? min : actual - 1;
-        set(subtracted);
+        if (actual - 1 > minAllowed) {
+            set(actual - 1);
+        }
+    };
+
+    const changeValue = () => {
+        const inputedValue = parseInt(_input.current.value);
+
+        if ((inputedValue > minAllowed) && (inputedValue < maxAllowed)) {
+            set(inputedValue);
+        } else {
+            _input.current.value = actual;
+        }
     };
 
     return <Wrapper>
-        <Button onClick={() => sum() }>+</Button>
-        <Total>{ actual }</Total>
-        <Button onClick={() => sub() }>-</Button>
+        <Button onClick={ () => sum() }>+</Button>
+        <Total
+            onBlur={ () => changeValue() }
+            ref={ _input }
+        />
+        <Button onClick={ () => sub() }>-</Button>
     </Wrapper>
 }
 
@@ -31,9 +51,8 @@ const Button = styled.div`
   cursor: pointer;
 `;
 
-const Total = styled.div`
+const Total = styled.input`
   padding: 5px;
-  
 `;
 
 export default NumberPick;

@@ -10,7 +10,6 @@ function Child({ child, setChild, maxAllowed, minAllowed }) {
     };
 
     return <div>
-        { qt.toString() }
         { qt.map((perChild, index) => (
             <NumberPick
                 key={ index }
