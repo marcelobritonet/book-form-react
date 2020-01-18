@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import NumberPick from './NumberPick';
-import Checkbox from "./Checkbox";
-import PromotionalCode from "./PromotionalCode";
-import Child from "./Child";
+import NumberPick from '../components/NumberPick';
+import Checkbox from "../components/Checkbox";
+import PromotionalCode from "../components/PromotionalCode";
+import Child from "../components/Child";
+import { api } from './form.service';
 
 function Form() {
     const initialDate = new Date();
@@ -21,34 +22,12 @@ function Form() {
         {
             label: 'Código Promocional',
             value: 'promo'
-        }, {
-            label: 'Ticket',
-            value: 'ticket'
         }
     ];
 
     const send = e => {
-        const baseUrl = 'https://reservations.omnibees.com/';
-        const params = {
-            q: 123,
-            NRooms: 1,
-            ad: hosts,
-            CheckIn: buildDate(checkIn),
-            CheckOut: buildDate(checkOut),
-            Code: promotionalCode,
-            group_code: promotionalCodeType,
-            ch: child.length,
-            ag: child,
-            lang: 'pt-BR'
-        };
-        console.log(params);
+        api({ rooms, hosts, checkIn, checkOut, promotionalCode, promotionalCodeType, child });
         e.preventDefault()
-    };
-
-    const buildDate = datetime => {
-        const day = ("0" + datetime.getDate()).slice(-2);
-        const month = ("0" + (datetime.getMonth() + 1)).slice(-2);
-        return `${ day }${ month }${ datetime.getFullYear() }`;
     };
 
     return <form>
