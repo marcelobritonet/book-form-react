@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import styled from 'styled-components';
 
-function NumberPick({ actual, set, maxAllowed, minAllowed }) {
+function NumberPick({ actual, set, maxAllowed, minAllowed, index }) {
     const _input = useRef();
 
     useEffect(() => {
@@ -9,22 +9,22 @@ function NumberPick({ actual, set, maxAllowed, minAllowed }) {
     }, [actual]);
 
     const sum = () => {
-        if((actual + 1) < maxAllowed) {
-            set(actual + 1);
+        if((actual + 1) <= maxAllowed) {
+            set(actual + 1, index);
         }
     };
 
     const sub = () => {
-        if (actual - 1 > minAllowed) {
-            set(actual - 1);
+        if (actual - 1 >= minAllowed) {
+            set(actual - 1, index);
         }
     };
 
     const changeValue = () => {
         const inputedValue = parseInt(_input.current.value);
 
-        if ((inputedValue > minAllowed) && (inputedValue < maxAllowed)) {
-            set(inputedValue);
+        if ((inputedValue >= minAllowed) && (inputedValue <= maxAllowed)) {
+            set(inputedValue, index);
         } else {
             _input.current.value = actual;
         }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import NumberPick from './NumberPick';
@@ -27,20 +27,28 @@ function Form() {
         }
     ];
 
-    const send = () => {
+    const send = e => {
         const baseUrl = 'https://reservations.omnibees.com/';
         const params = {
-            q,
-            NRooms,
-            ad,
-            CheckIn,
-            CheckOut,
-            Code,
-            group_code,
-            ch,
-            ag,
+            q: 123,
+            NRooms: 1,
+            ad: hosts,
+            CheckIn: buildDate(checkIn),
+            CheckOut: buildDate(checkOut),
+            Code: promotionalCode,
+            group_code: promotionalCodeType,
+            ch: child.length,
+            ag: child,
             lang: 'pt-BR'
-        }
+        };
+        console.log(params);
+        e.preventDefault()
+    };
+
+    const buildDate = datetime => {
+        const day = ("0" + datetime.getDate()).slice(-2);
+        const month = ("0" + (datetime.getMonth() + 1)).slice(-2);
+        return `${ day }${ month }${ datetime.getFullYear() }`;
     };
 
     return <form>
@@ -80,7 +88,7 @@ function Form() {
 
         <div>Crianças</div>
         <Child
-            maxAllowed={ 10 }
+            maxAllowed={ 12 }
             minAllowed={ 0 }
             child={ child }
             setChild={ setChild }
@@ -101,7 +109,7 @@ function Form() {
         }
 
         <button
-            onClick={ () => send() }
+            onClick={ send }
         >Enviar</button>
     </form>
 }

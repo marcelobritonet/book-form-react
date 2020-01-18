@@ -4,10 +4,14 @@ import styled from "styled-components";
 function Select({ options, setValue }) {
     const _input = useRef();
 
+    const onChange = () => {
+        setValue(_input.current.value)
+    };
+
     return <Label>
         <select
             ref={ _input }
-            onChange={ () => setValue(_input.current.value) }
+            onChange={ onChange }
         >
             { options.map((item, index) =>
                 <option
